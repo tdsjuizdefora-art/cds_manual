@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Manual Oficial do Conecta DS | Guia Completo para Alunos e Professores</title>
+  <style>
+    /* ==========================================================================
+       MANUAL INTERATIVO CONECTA DS — DESIGN SYSTEM UNIFICADO E RESPONSIVO
+       Cores Oficiais: Slate 950 (#030712), Slate 900 (#0f172a), Sky Accent (#38bdf8), Emerald (#10b981)
+       ========================================================================== */
+    :root {
+      --bg-app: #030712;
+      --bg-surface: #0f172a;
+      --bg-card: #1e293b;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --primary: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      background: #020617;
+      font-family: var(--font);
+      color: var(--text);
+    }
+
+    #app-container {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      position: relative;
+    }
+
+    /* TOPO DO MANUAL */
+    .manual-topbar {
+      height: 54px;
+      background: #090e1a;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .manual-topbar-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .manual-topbar-title span { color: var(--accent); }
+
+    .manual-badge-track {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .track-aluno { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .track-prof { background: rgba(16, 185, 129, 0.15); color: var(--primary); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .track-geral { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+    /* PALCO DOS SLIDES (LAYOUT 100% FLUIDO SEM CORTAR ELEMENTOS) */
+    #slides-viewport {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding: 1.25rem 2rem;
+      grid-template-columns: 430px 1fr;
+      gap: 1.75rem;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      background: var(--bg-app);
+    }
+
+    .slide.active {
+      display: grid;
+      opacity: 1;
+    }
+
+    @media (max-width: 900px) {
+      .slide {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+        padding: 1rem;
+      }
+    }
+
+    /* COLUNA ESQUERDA: EXPLICAÇÕES DIDÁTICAS */
+    .slide-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .slide-chapter {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .slide-heading {
+      font-size: 1.45rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #fff;
+    }
+
+    .slide-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
+    .step-num {
+      background: var(--accent);
+      color: #000;
+      font-weight: 800;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .tip-box {
+      margin-top: auto;
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 3px solid var(--accent);
+      padding: 0.75rem 0.9rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.825rem;
+      color: #e2e8f0;
+      line-height: 1.45;
+    }
+
+    /* COLUNA DIREITA: RÉPLICA DAS TELAS DO APP */
+    .slide-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 0;
+      height: 100%;
+    }
+
+    .screen-mockup {
+      width: 100%;
+      height: 100%;
+      background: #090e18;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .screen-topbar {
+      height: 36px;
+      background: #0b1220;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    .screen-url {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-left: 0.5rem;
+      font-family: monospace;
+    }
+
+    .screen-body {
+      flex: 1;
+      padding: 1.25rem;
+      overflow-y: auto;
+      background: #030712;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      position: relative;
+    }
+
+    /* MARCADORES VISUAIS COM DESTAQUE */
+    .ui-spotlight {
+      position: absolute;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.12);
+      pointer-events: none;
+      animation: pulseGlow 1.8s infinite;
+      z-index: 10;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(56, 189, 248, 0); }
+    }
+
+    .ui-callout-badge {
+      position: absolute;
+      background: var(--accent);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      z-index: 11;
+      top: -11px;
+      left: -8px;
+      white-space: nowrap;
+    }
+
+    /* COMPONENTES SIMULADOS DO APP */
+    .app-nav {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .app-logo { font-size: 0.9rem; font-weight: 800; color: #fff; }
+    .app-logo span { color: var(--accent); }
+    .app-tabs { display: flex; gap: 0.35rem; }
+    .app-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .app-tab.active { background: #1e293b; color: #fff; font-weight: 600; }
+
+    .app-card {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .app-tag {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      background: #1e293b;
+      color: var(--accent);
+      padding: 2px 6px;
+      border-radius: 4px;
+      align-self: flex-start;
+      font-weight: 700;
+    }
+
+    .app-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: default;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      text-align: left;
+    }
+    .app-table th, .app-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .app-table th { background: #0b1220; color: #fff; font-weight: 600; }
+
+    /* BARRA INFERIOR DE CONTROLES */
+    .manual-controls {
+      height: 56px;
+      background: #090e1a;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    #progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--accent);
+      width: 3%;
+      transition: width 0.2s linear;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .ctrl-group { display: flex; align-items: center; gap: 0.6rem; }
+    .btn-ctrl {
+      background: #1e293b;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .btn-ctrl:hover { background: #334155; }
+    .btn-ctrl.primary { background: var(--primary); color: #000; border: none; }
+
+    .ctrl-counter {
+      font-family: monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* ÍNDICE LATERAL */
+    #index-drawer {
+      position: absolute;
+      top: 0;
+      right: -380px;
+      width: 360px;
+      height: 100%;
+      background: #090e1a;
+      border-left: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+    }
+    #index-drawer.open { right: 0; }
+
+    .drawer-head {
+      padding: 0.9rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+    }
+
+    .drawer-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .index-item {
+      padding: 0.55rem 0.75rem;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .index-item:hover { border-color: var(--accent); background: #1e293b; }
+    .index-item.active { border-color: var(--primary); background: rgba(16, 185, 129, 0.1); }
+  </style>
+</head>
+<body>
+
+  <div id="app-container">
+    <header class="manual-topbar">
+      <div class="manual-topbar-title">
+        <span>📖 GUIA OFICIAL</span> | Portal Conecta DS
+      </div>
+      <div id="slide-track-badge" class="manual-badge-track track-geral">Visão Geral</div>
+    </header>
+
+    <main id="slides-viewport">
+
+      <!-- ====================================================================
+           SLIDE 01: CAPA
+           ==================================================================== -->
+      <section class="slide active" data-track="Geral">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Apresentação</span>
+          <h1 class="slide-heading">Guia Prático do Conecta DS</h1>
+          <p class="slide-desc">
+            Este manual ensina <strong>todas as funcionalidades do sistema</strong>, passo a passo e sem termos técnicos difíceis:
+          </p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🎓</div>
+              <div><strong>Parte 1 — Trilha do Aluno:</strong> Da criação de conta e confirmação por e-mail até o envio de projetos e ganho de medalhas.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">👨‍🏫</div>
+              <div><strong>Parte 2 — Trilha do Professor:</strong> Da moderação e aprovação de projetos até a publicação de notícias e gestão da turma.</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            💡 <strong>Navegação:</strong> Use as setas do teclado (◀ e ▶) ou a barra inferior para navegar entre os tópicos.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar">
+              <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+              <span class="screen-url">conecta-ds/index.html</span>
+            </div>
+            <div class="screen-body" style="align-items: center; justify-content: center; text-align: center; gap: 1.25rem;">
+              <div style="font-size: 3.5rem;">🚀</div>
+              <h2 style="font-size: 2rem; font-weight: 800;">CONECTA <span style="color: var(--accent);">DS</span></h2>
+              <p style="color: var(--text-muted); max-width: 450px; font-size: 0.95rem;">
+                A ponte permanente entre estudantes, corpo docente e o mercado de desenvolvimento de sistemas.
+              </p>
+              <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+                <span style="background: #1e293b; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem;">📢 Avisos Oficiais</span>
+                <span style="background: #1e293b; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem;">💻 Vitrine de Trabalhos</span>
+                <span style="background: #1e293b; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem;">🏅 Medalhas Acadêmicas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PARTE 1: TRILHA DO ALUNO (SLIDES 02 A 16)
+           ==================================================================== -->
+
+      <!-- SLIDE 02: CADASTRO DO ALUNO -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 01</span>
+          <h2 class="slide-heading">Como criar sua conta no portal</h2>
+          <p class="slide-desc">O cadastro do estudante é aberto e realizado em 3 etapas simples:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Clique no botão <strong>"Entrar"</strong> no topo da página e depois em <strong>"Cadastre-se"</strong>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Informe seu e-mail real, defina uma senha (mínimo de 6 dígitos) e seu <strong>nome completo</strong> (usado como autoria dos seus projetos).</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            🎓 Todo cadastro realizado por esta tela nasce automaticamente com o perfil de <strong>Estudante</strong>.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Modal de Cadastro (index.html)</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width: 340px;">
+                <h4 style="color:#fff; font-size: 1rem;">Cadastrar Conta no Conecta DS</h4>
+                <label style="font-size:0.75rem; color:var(--text-muted);">E-mail institucional/válido:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.45rem; border-radius:6px; font-size:0.8rem; color:#fff;">mariana.costa@escola.edu.br</div>
+                <label style="font-size:0.75rem; color:var(--text-muted);">Nome Completo:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.45rem; border-radius:6px; font-size:0.8rem; color:#fff;">Mariana Costa</div>
+                <div class="app-btn" style="margin-top:0.5rem; text-align:center;">Cadastrar e Confirmar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 03: CONSENTIMENTO LGPD -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 02</span>
+          <h2 class="slide-heading">Aceite dos Termos de Uso e LGPD</h2>
+          <p class="slide-desc">Seus dados e projetos são protegidos por lei e regimento acadêmico:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>É <strong>obrigatório marcar a caixa de seleção</strong> aceitando as diretrizes da comunidade antes de concluir o envio.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Clicando no link em azul, você pode abrir o documento completo que detalha a finalidade acadêmica e a autorização de exibição pública dos seus projetos.</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            🔒 <strong>Privacidade:</strong> Nenhum dado sensível como CPF ou telefone é exibido publicamente na plataforma.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Consentimento Formal</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width: 360px; position:relative;">
+                <div class="ui-spotlight" style="inset: -4px;"></div>
+                <div class="ui-callout-badge">[ OBRIGATÓRIO ]</div>
+                <div style="display:flex; gap:0.5rem; align-items:flex-start;">
+                  <input type="checkbox" checked disabled style="margin-top:3px;">
+                  <span style="font-size:0.8rem; color:#cbd5e1; line-height:1.4;">
+                    Li e concordo com os <b style="color:var(--accent);">Termos de Uso e Política de Privacidade (LGPD)</b> da instituição.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 04: CONFIRMAÇÃO DE E-MAIL -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 03</span>
+          <h2 class="slide-heading">Confirmando o E-mail de Ativação</h2>
+          <p class="slide-desc">Para garantir que a conta pertence a você, uma validação rápida é disparada:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Abra seu e-mail e procure pela mensagem enviada pelo <strong>Conecta DS</strong> (verifique a caixa de Spam caso não veja de início).</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Clique no link <strong>"Confirm your mail"</strong>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>O portal abrirá com uma mensagem de confirmação: <em>"🎉 E-mail confirmado com sucesso!"</em> e você já estará autenticado.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Retorno de Ativação</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--primary); border-radius: 12px; padding: 1.75rem; max-width: 400px; text-align: center; display: flex; flex-direction: column; gap: 0.6rem;">
+                <div style="font-size: 2.2rem;">🎉</div>
+                <h3 style="color: #fff; font-size: 1.15rem;">E-mail confirmado com sucesso!</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Sua conta de estudante está 100% pronta para uso.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 05: LOGIN E SESSÃO -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 04</span>
+          <h2 class="slide-heading">Como Fazer Login na Plataforma</h2>
+          <p class="slide-desc">Nas próximas vezes em que for acessar o portal:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Clique no botão <strong>"Entrar"</strong> no topo da tela.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Digite seu e-mail e sua senha cadastrada.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Seu nome aparecerá no canto superior e a aba <strong>"👤 Meu Perfil"</strong> ficará visível na barra de menus.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Topo do Portal com Login Ativo</span></div>
+            <div class="screen-body">
+              <div class="app-nav">
+                <div class="app-logo">🚀 CONECTA <span>DS</span></div>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                  <span style="font-size:0.8rem; color:#fff; font-weight:700;">Mariana Costa</span>
+                  <span class="app-btn" style="background:#1e293b; color:#fff; padding:3px 8px; font-size:0.75rem;">Sair</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 06: MENU MOBILE -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 05</span>
+          <h2 class="slide-heading">Usando o Menu no Celular (Gaveta)</h2>
+          <p class="slide-desc">Ao navegar pelo smartphone, a interface se adapta para não cortar opções:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">☰</div>
+              <div>Toque no botão com <strong>três barrinhas (Hambúrguer)</strong> no canto superior direito.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">📱</div>
+              <div>Uma gaveta lateral desliza suavemente sobre a tela, listando todas as seções sem cortes de texto.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">✕</div>
+              <div>Ao tocar em qualquer opção ou fora do menu, a gaveta se fecha automaticamente.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Navegação em Smartphones</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div style="width:280px; background:#0f172a; border:1px solid #334155; border-radius:10px; padding:1rem; display:flex; flex-direction:column; gap:0.5rem;">
+                <div style="font-size:0.85rem; font-weight:700; color:#fff; border-bottom:1px solid var(--border); padding-bottom:0.5rem;">Navegação do Portal</div>
+                <div class="app-tab active" style="font-size:0.85rem;">🏠 Início</div>
+                <div class="app-tab" style="font-size:0.85rem;">📢 Notícias</div>
+                <div class="app-tab" style="font-size:0.85rem;">💻 Vitrine</div>
+                <div class="app-tab" style="font-size:0.85rem;">🏆 Desafios</div>
+                <div class="app-tab" style="font-size:0.85rem;">👤 Meu Perfil</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 07: PÁGINA INICIAL / FEED -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 06</span>
+          <h2 class="slide-heading">A Página Inicial: Seu Mural Oficial</h2>
+          <p class="slide-desc">Ao abrir o portal, a tela de Início reúne os principais avisos do dia:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">👋</div>
+              <div><strong>Saudação com seu Nome:</strong> Confirma que sua conta está logada.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">📢</div>
+              <div><strong>Comunicados Recentes:</strong> Mudanças de horários, inscrições e comunicados urgentes da escola.</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            Avisos de turmas não ficam mais perdidos em conversas de grupos de WhatsApp.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Início (index.html)</span></div>
+            <div class="screen-body">
+              <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                <h4 style="color:#fff;">Olá, Mariana Costa! 👋</h4>
+                <p style="color: var(--text-muted); font-size: 0.8rem;">Acompanhe os principais destaques da instituição.</p>
+              </div>
+              <div class="app-card">
+                <span class="app-tag">Aviso</span>
+                <strong style="color:#fff; font-size:0.9rem;">Horário das Aulas de Laboratório</strong>
+                <p style="font-size:0.75rem; color:var(--text-muted);">As turmas do 2º módulo terão aula prática no Lab 03.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 08: NOTÍCIAS E COMUNICADOS -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 07</span>
+          <h2 class="slide-heading">Aba de Notícias e Prazos</h2>
+          <p class="slide-desc">Aba dedicada com o histórico completo de comunicados institucionais:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🏷️</div>
+              <div><strong>Categorias:</strong> Etiquetas coloridas indicando se é <em>Aviso, Evento, Prazo</em> ou <em>Oportunidade</em>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">📅</div>
+              <div><strong>Prazos Limites:</strong> Destaque para datas de entrega e encerramento de inscrições.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">🔗</div>
+              <div><strong>Botão de Ação:</strong> Abre editais ou links de formulários diretamente.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Mural de Notícias</span></div>
+            <div class="screen-body">
+              <div class="app-card" style="border-left: 3px solid var(--accent);">
+                <span class="app-tag">Prazo</span>
+                <h4 style="color:#fff; font-size:0.95rem;">🔴 Inscrições Abertas — Hackathon Web 2026</h4>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Inscrições de equipes até 20/10 na secretaria do curso.</p>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.35rem;">
+                  <span style="font-size:0.75rem; color:#64748b;">📅 Prazo: 20 de Outubro</span>
+                  <span class="app-btn" style="padding:2px 8px; font-size:0.75rem;">Ver Detalhes ↗</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 09: SINO DE NOTIFICAÇÕES REALTIME -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 08</span>
+          <h2 class="slide-heading">O Sino de Notificações em Tempo Real</h2>
+          <p class="slide-desc">Você nunca perde um aviso urgente enquanto estuda:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🔔</div>
+              <div>Assim que a coordenação publica uma nova notícia, o sininho no topo toca e <strong>soma +1 no contador</strong> na mesma hora, sem você precisar atualizar a tela (F5).</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">👆</div>
+              <div>Basta <strong>tocar no sino</strong> para o portal abrir diretamente a lista de avisos e zerar o contador de não lidos.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Sino Interativo</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div style="background:#1e293b; border:1px solid var(--border); padding:1rem 1.5rem; border-radius:10px; display:flex; align-items:center; gap:1rem; position:relative;">
+                <div class="ui-spotlight" style="inset: -4px;"></div>
+                <div class="ui-callout-badge">CLIQUE PARA LER</div>
+                <span style="font-size:1.5rem;">🔔</span>
+                <div>
+                  <strong style="color:#fff; font-size:0.95rem;">2 Novos Comunicados</strong>
+                  <p style="font-size:0.75rem; color:var(--text-muted);">Publicados pela coordenação agora há pouco.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: EXPLORANDO A VITRINE -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 09</span>
+          <h2 class="slide-heading">A Vitrine de Projetos dos Estudantes</h2>
+          <p class="slide-desc">A vitrine é a memória digital de tudo o que os alunos desenvolvem no curso:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🌐</div>
+              <div>Qualquer pessoa na internet pode abrir e ver os trabalhos aprovados, servindo de <strong>vitrine para recrutadores</strong>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">👥</div>
+              <div>Cada cartão exibe o nome de todos os estudantes que participaram do desenvolvimento.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">💻</div>
+              <div>Botões para abrir o código no <strong>GitHub</strong> ou testar a <strong>Demonstração Online</strong>.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Vitrine (index.html)</span></div>
+            <div class="screen-body">
+              <div class="app-card">
+                <div style="display:flex; justify-content:space-between;">
+                  <span class="app-tag">HTML • CSS • JS</span>
+                  <span style="color:var(--primary); font-size:0.75rem; font-weight:700;">✅ APROVADO</span>
+                </div>
+                <h4 style="color:#fff; font-size:1rem;">🏥 Saúde Fácil — Agendamento Online</h4>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Sistema desenvolvido pelos alunos para postos de saúde locais.</p>
+                <p style="font-size:0.75rem; color:#64748b;">👥 Mariana Costa, João Pedro e Gabriel</p>
+                <div style="display:flex; gap:0.5rem; margin-top:0.35rem;">
+                  <span class="app-btn" style="background:#1e293b;">GitHub</span>
+                  <span class="app-btn">Ver Demo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 11: SUBMETENDO SEU PROJETO -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 10</span>
+          <h2 class="slide-heading">Como Enviar seu Projeto (Passo a Passo)</h2>
+          <p class="slide-desc">Terminou um trabalho prático na disciplina? Publique em poucos minutos:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Na aba <strong>"Projetos"</strong>, clique no botão <code>+ Submeter Projeto</code>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Preencha Título, Resumo descritivo, Tecnologias e os nomes dos integrantes da equipe.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Cole o link do repositório no <strong>GitHub</strong> e o link do deploy online (se houver). Clique em Enviar!</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Modal Submeter Projeto</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:340px;">
+                <h4 style="color:#fff; font-size:0.95rem;">Submeter Projeto na Vitrine</h4>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Título do Projeto:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">Agenda Escolar DS</div>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Integrantes / Autores:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">Mariana Costa e Pedro Lima</div>
+                <div class="app-btn" style="margin-top:0.5rem; text-align:center;">Enviar para Avaliação</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: ESTADO PENDENTE -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 11</span>
+          <h2 class="slide-heading">O Status "Aguardando Moderação"</h2>
+          <p class="slide-desc">O que acontece logo após você enviar seu trabalho:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">⏳</div>
+              <div>O projeto entra com o selo amarelo <code>⚠️ Aguardando Moderação</code>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">🔒</div>
+              <div>Neste momento, <strong>somente você e os professores enxergam o projeto</strong>. Ele não fica visível ao público geral ainda.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">✏️</div>
+              <div>Você pode editar as informações dele enquanto a aprovação estiver pendente.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Projeto Pendente</span></div>
+            <div class="screen-body">
+              <div class="app-card" style="border-left: 4px solid var(--warning);">
+                <div style="display:flex; justify-content:space-between;">
+                  <span class="app-tag">HTML • CSS • JS</span>
+                  <span style="color:var(--warning); font-size:0.75rem; font-weight:700;">⚠️ AGUARDANDO MODERAÇÃO</span>
+                </div>
+                <h4 style="color:#fff; font-size:1rem;">Agenda Escolar DS</h4>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Trabalho submetido. Aguardando homologação do professor.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 13: DESAFIOS E HACKATHONS -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 12</span>
+          <h2 class="slide-heading">Acompanhando Desafios e Hackathons</h2>
+          <p class="slide-desc">Participe das competições e maratonas de programação promovidas pelo curso:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🏁</div>
+              <div><strong>Fases do Evento:</strong> Veja se a maratona está em fase de <em>Inscrições, Desenvolvimento</em> ou <em>Avaliação</em>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">📜</div>
+              <div><strong>Regulamento Oficial:</strong> Clique no botão do edital para conferir regras, critérios de pontuação e temas.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Desafios (index.html)</span></div>
+            <div class="screen-body">
+              <div class="app-card">
+                <span class="app-tag">FASE: INSCRIÇÕES ABERTAS</span>
+                <h4 style="color:#fff; font-size:1rem;">🏆 Desafio de Desenvolvimento Web 2026</h4>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Crie um sistema inovador para a comunidade local.</p>
+                <p style="font-size:0.75rem; color:#64748b;">📝 Inscrições: até 20/10 | 🏁 Entrega Final: 30/10</p>
+                <div class="app-btn" style="background:#1e293b; align-self:flex-start; margin-top:0.35rem;">Acessar Regulamento ↗</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 14: MEU PERFIL -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 13</span>
+          <h2 class="slide-heading">Visualizando seu Perfil Acadêmico</h2>
+          <p class="slide-desc">Seu cartão institucional que consolida suas competências e trabalhos:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">👤</div>
+              <div>Exibe seu nome formal, papel acadêmico (<code>ALUNO</code>) e e-mail cadastrado.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">💡</div>
+              <div>Sua <strong>biografia</strong> e tags com as linguagens e tecnologias que você domina.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">🔗</div>
+              <div>Botões diretos para o seu GitHub e LinkedIn para divulgar aos professores e recrutadores.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Meu Perfil (index.html)</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:320px;">
+                <h3 style="color:#fff; font-size:1.1rem;">Mariana Costa</h3>
+                <span class="app-tag">ALUNO</span>
+                <p style="font-size:0.8rem; color:#94a3b8;">Estudante do curso técnico focada em JavaScript e banco de dados.</p>
+                <div style="display:flex; gap:0.4rem; margin-top:0.35rem;">
+                  <span class="app-tag" style="background:#1e293b;">HTML</span>
+                  <span class="app-tag" style="background:#1e293b;">CSS</span>
+                  <span class="app-tag" style="background:#1e293b;">JS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 15: EDITANDO MEU PERFIL -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 14</span>
+          <h2 class="slide-heading">Como Atualizar sua Bio e Redes</h2>
+          <p class="slide-desc">Mantenha seu perfil sempre atualizado conforme aprende novas tecnologias:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Na aba "Meu Perfil", clique no botão <code>✏️ Editar Meus Dados</code>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Altere sua biografia, digite suas novas habilidades separadas por vírgula e atualize seus links.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Clique em <strong>"Salvar Alterações"</strong>. Os dados atualizam na mesma hora!</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Modal Editar Perfil</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:340px;">
+                <h4 style="color:#fff; font-size:0.95rem;">Editar Meu Perfil</h4>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Competências Técnicas:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">HTML, CSS, JavaScript, React, SQL</div>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Link do seu GitHub:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:var(--accent);">https://github.com/marianacosta</div>
+                <div class="app-btn" style="margin-top:0.5rem; text-align:center;">Salvar Alterações</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 16: MEDALHAS E RECONHECIMENTO -->
+      <section class="slide" data-track="Aluno">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Aluno • Passo 15</span>
+          <h2 class="slide-heading">Como Ganhar Medalhas (Badges)</h2>
+          <p class="slide-desc">Suas conquistas acadêmicas caem automaticamente no seu perfil:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">💻</div>
+              <div><strong>Criador Digital:</strong> Você ganha essa medalha no exato segundo em que o professor aprova seu primeiro projeto na vitrine!</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">🚀</div>
+              <div><strong>Desbravador:</strong> Conquistada ao participar de desafios e hackathons.</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            ✨ Você não precisa pedir ao professor: o sistema atribui a conquista automaticamente no banco de dados assim que o trabalho é aprovado.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Quadro de Conquistas do Aluno</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:300px; text-align:center; padding:1.5rem;">
+                <h4 style="color:#fff; font-size:0.95rem; margin-bottom:0.75rem;">Conquistas & Reconhecimentos</h4>
+                <div style="background:#1e293b; border:1px solid var(--border); border-radius:10px; padding:1rem; display:flex; flex-direction:column; align-items:center; gap:0.25rem;">
+                  <div style="font-size:2.2rem;">💻</div>
+                  <strong style="color:#fff; font-size:0.9rem;">Criador Digital</strong>
+                  <p style="font-size:0.75rem; color:var(--text-muted);">Teve o primeiro projeto aprovado na vitrine oficial!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PARTE 2: TRILHA DO PROFESSOR (SLIDES 17 A 32)
+           ==================================================================== -->
+
+      <!-- SLIDE 17: INGRESSO DO DOCENTE -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 01</span>
+          <h2 class="slide-heading">Como o Professor Ingressa no Sistema</h2>
+          <p class="slide-desc">Para garantir segurança máxima, professores não se cadastram pela tela pública comum:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Você recebe um <strong>Link de Convite Oficial</strong> gerado pela coordenação (com seu e-mail já travado para segurança).</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Ao concluir o cadastro com senha e confirmar o e-mail, o sistema atribui seu papel de <code>PROFESSOR</code> automaticamente!</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            🛡️ Isso impede que alunos se autodeclarem professores ou mexam em notas e projetos.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Link de Convite Docente</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:340px; text-align:center;">
+                <div style="font-size:2rem;">🎟️</div>
+                <h4 style="color:#fff; font-size:1rem;">Convite de Docente</h4>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Acesso institucional com privilégios de moderação.</p>
+                <div style="background:#090e17; padding:0.5rem; border-radius:6px; font-size:0.8rem; color:#fff; margin-top:0.5rem;">professor@escola.br</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 18: LOGIN GUARD DO BACKOFFICE -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 02</span>
+          <h2 class="slide-heading">Entrando no Painel de Gestão (admin.html)</h2>
+          <p class="slide-desc">O Backoffice é o centro de controle dos docentes:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Acesse o endereço <code>admin.html</code> pelo navegador ou pelo atalho na barra superior.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Digite seu e-mail institucional e senha de professor.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Seu crachá <code>Docente</code> é reconhecido e todo o painel de aprovações abre na hora!</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            🚫 Se um aluno tentar abrir essa página, o portal expulsa o acesso automaticamente.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">admin.html (Login Guard)</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:340px; text-align:center;">
+                <div style="font-size:2rem;">🔐</div>
+                <h4 style="color:#fff; font-size:1rem;">Acesso Restrito à Coordenação</h4>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.75rem;">Área exclusiva para docentes e gestores.</p>
+                <div class="app-btn" style="text-align:center;">Entrar no Backoffice</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 19: NAVEGAÇÃO E LOGOUT DO BACKOFFICE -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 03</span>
+          <h2 class="slide-heading">Navegação e Botão Sair Permanente</h2>
+          <p class="slide-desc">Desenvolvido com atenção máxima para nunca esconder opções no celular:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🚪</div>
+              <div><strong>Botão Sair Fixo:</strong> Localizado no canto superior direito, visível em qualquer tamanho de tela para você encerrar sua sessão com um clique.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">☰</div>
+              <div><strong>Menu de Seções:</strong> No celular, o botão de hambúrguer abre as seções em uma gaveta sem embaçar ou travar a tela.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Topbar do Backoffice</span></div>
+            <div class="screen-body">
+              <div style="background:#090e1a; padding:0.6rem 1rem; border:1px solid var(--border); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.9rem; font-weight:800; color:#fff;">🚀 CONECTA <span style="color:var(--accent);">ADMIN</span></span>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                  <span style="font-size:0.75rem; color:#fff;">Docente: Carlos Alberto</span>
+                  <span style="background:rgba(239,68,68,0.2); color:#fca5a5; padding:3px 8px; border-radius:6px; font-size:0.75rem; font-weight:700;">🚪 Sair</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 20: DASHBOARD E MÉTRICAS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 04</span>
+          <h2 class="slide-heading">Dashboard com Métricas em Tempo Real</h2>
+          <p class="slide-desc">Ao abrir o painel, você tem a visão geral do engajamento da turma:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">👥</div>
+              <div><strong>Total de Usuários:</strong> Contagem de alunos e professores ativos.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">⚠️</div>
+              <div><strong>Projetos Pendentes:</strong> Cartão de alerta amarelo indicando trabalhos aguardando sua avaliação.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">📢</div>
+              <div><strong>Avisos Ativos:</strong> Quantidade de comunicados oficiais publicados.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Visão Geral (admin.html)</span></div>
+            <div class="screen-body">
+              <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.75rem;">
+                <div class="app-card">
+                  <span style="font-size:1.5rem;">👥</span>
+                  <b style="font-size:1.4rem; color:#fff;">28</b>
+                  <span style="font-size:0.75rem; color:var(--text-muted);">Alunos Ativos</span>
+                </div>
+                <div class="app-card" style="border-left:3px solid var(--warning);">
+                  <span style="font-size:1.5rem;">⚠️</span>
+                  <b style="font-size:1.4rem; color:#fff;">3</b>
+                  <span style="font-size:0.75rem; color:var(--text-muted);">Pendentes</span>
+                </div>
+                <div class="app-card">
+                  <span style="font-size:1.5rem;">📢</span>
+                  <b style="font-size:1.4rem; color:#fff;">6</b>
+                  <span style="font-size:0.75rem; color:var(--text-muted);">Comunicados</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 21: APROVAÇÃO DE PROJETOS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 05</span>
+          <h2 class="slide-heading">Como Avaliar e Aprovar Projetos</h2>
+          <p class="slide-desc">Você decide o que vai ao ar na vitrine oficial com um único clique:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Abra a aba <strong>"Moderação de Projetos"</strong> no painel.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Na linha do trabalho pendente, clique no botão verde <strong>"Aprovar"</strong>.</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            ⚡ <strong>Efeito Imediato:</strong> O projeto vai ao ar na vitrine pública e o aluno recebe a medalha de Criador Digital automaticamente!
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Tabela de Projetos (admin.html)</span></div>
+            <div class="screen-body">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Autores</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Agenda DS</strong></td>
+                    <td>Mariana Costa</td>
+                    <td><span style="color:var(--warning); font-size:0.75rem; font-weight:700;">⚠️ PENDENTE</span></td>
+                    <td>
+                      <span class="app-btn" style="padding:2px 8px; font-size:0.75rem;">Aprovar</span>
+                      <span class="app-btn" style="background:#1e293b; padding:2px 8px; font-size:0.75rem;">Editar</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 22: EDIÇÃO DE PROJETOS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 06</span>
+          <h2 class="slide-heading">Como Editar Projetos dos Alunos</h2>
+          <p class="slide-desc">Corrija descrições, tecnologias ou links antes de homologar:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Na tabela de moderação, clique no botão <code>✏️ Editar</code> na linha do projeto.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>O modal abre com todos os dados preenchidos: ajuste o título, corrija a ortografia ou adicione tags de linguagem.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Clique em <strong>"Salvar Alterações"</strong>.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Modal Editar Projeto (admin.js)</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:340px;">
+                <h4 style="color:#fff; font-size:0.95rem;">Editar Projeto (Docente)</h4>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Título:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">Agenda Escolar DS</div>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Tecnologias:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">HTML, CSS, JavaScript, Supabase</div>
+                <div class="app-btn" style="margin-top:0.5rem; text-align:center;">Salvar Alterações</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 23: EXCLUSÃO DE PROJETOS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 07</span>
+          <h2 class="slide-heading">Como Excluir Projetos Inadequados</h2>
+          <p class="slide-desc">Remova submissões com plágio, códigos maliciosos ou testes vazios:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Na tabela de projetos, clique no botão vermelho <strong>"Excluir"</strong>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>O sistema solicita confirmação: <em>"Tem certeza que deseja excluir este projeto?"</em>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Confirmando, o projeto é removido permanentemente da vitrine e do banco de dados.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Confirmação de Exclusão</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:320px; text-align:center; border:1px solid var(--danger);">
+                <div style="font-size:2rem;">🗑️</div>
+                <h4 style="color:#fff; font-size:0.95rem;">Excluir Submissão</h4>
+                <p style="font-size:0.75rem; color:var(--text-muted);">O projeto será removido da vitrine oficial.</p>
+                <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                  <span class="app-btn" style="background:#1e293b; flex:1;">Cancelar</span>
+                  <span class="app-btn" style="background:var(--danger); flex:1;">Confirmar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 24: PUBLICANDO COMUNICADOS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 08</span>
+          <h2 class="slide-heading">Como Publicar um Comunicado Oficial</h2>
+          <p class="slide-desc">Envie avisos que tocam o sininho de todos os alunos em tempo real:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Abra a aba <strong>"📢 Comunicados Oficiais"</strong> e clique em <code>+ Novo Comunicado</code>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Escreva o Título, o texto da Mensagem, escolha a Categoria (<em>Aviso, Evento, Prazo</em>) e informe a data limite.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Clique em <strong>"Publicar Comunicado"</strong>. Pronto! O aviso cai no feed e atualiza o sininho dos alunos na hora.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Modal Novo Comunicado</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:340px;">
+                <h4 style="color:#fff; font-size:0.95rem;">Novo Comunicado Oficial</h4>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Título:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">Início das Inscrições para Feira</div>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Categoria:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">Prazo</div>
+                <div class="app-btn" style="margin-top:0.5rem; text-align:center;">Publicar Comunicado</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 25: EDITANDO E EXCLUINDO COMUNICADOS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 09</span>
+          <h2 class="slide-heading">Como Editar ou Excluir Comunicados</h2>
+          <p class="slide-desc">Errou um prazo ou precisa cancelar um evento divulgado?</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">✏️</div>
+              <div><strong>Para Editar:</strong> Clique no botão <code>✏️ Editar</code> na linha do aviso para alterar o texto ou estender o prazo de entrega.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">🗑️</div>
+              <div><strong>Para Excluir:</strong> Clique em <code>Excluir</code> para retirar o comunicado do mural e do feed dos alunos.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Tabela de Comunicados (admin.html)</span></div>
+            <div class="screen-body">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Categoria</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Início das Inscrições</td>
+                    <td>Prazo</td>
+                    <td>
+                      <span class="app-btn" style="background:#1e293b; padding:2px 8px; font-size:0.75rem;">✏️ Editar</span>
+                      <span class="app-btn" style="background:#ef4444; padding:2px 8px; font-size:0.75rem;">Excluir</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 26: LANÇANDO DESAFIOS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 10</span>
+          <h2 class="slide-heading">Como Criar um Desafio ou Hackathon</h2>
+          <p class="slide-desc">Promova maratonas técnicas para engajar os estudantes:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Abra a aba <strong>"🏆 Desafios & Eventos"</strong> e clique em <code>+ Novo Desafio</code>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Informe o Nome da competição, as Instruções/Regulamento, o período de inscrições e a data de entrega final.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Clique em <strong>"Lançar Desafio"</strong> para divulgar aos alunos.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Modal Novo Desafio</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:340px;">
+                <h4 style="color:#fff; font-size:0.95rem;">Lançar Novo Desafio Técnico</h4>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Nome do Desafio:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">Hackathon Web 2026</div>
+                <label style="font-size:0.7rem; color:var(--text-muted);">Período de Inscrição:</label>
+                <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff;">01/10 a 10/10</div>
+                <div class="app-btn" style="margin-top:0.5rem; text-align:center;">Lançar Desafio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 27: GERENCIANDO FASES DOS DESAFIOS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 11</span>
+          <h2 class="slide-heading">Mudando as Fases dos Desafios na Tabela</h2>
+          <p class="slide-desc">Acompanhe e controle o andamento do Hackathon sem complicações:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">⚡</div>
+              <div>A coluna <strong>"Fase Atual"</strong> é um menu de seleção direto na tabela.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">🔄</div>
+              <div>Basta clicar e mudar de <em>Inscrições</em> para <em>Desenvolvimento</em>, <em>Avaliação</em> ou <em>Encerrado</em>.</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            A troca atualiza na mesma hora para todos os alunos, sem você precisar abrir modais ou salvar nada.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Seletor de Fases na Tabela</span></div>
+            <div class="screen-body">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Nome do Desafio</th>
+                    <th>Fase Atual</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Hackathon Web 2026</td>
+                    <td>
+                      <select style="background:#090e17; color:#fff; border:1px solid var(--accent); padding:4px; border-radius:4px; font-size:0.75rem;">
+                        <option>Inscrições</option>
+                        <option selected>Desenvolvimento</option>
+                        <option>Avaliação</option>
+                        <option>Encerrado</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 28: GESTÃO DA TURMA E PAPÉIS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 12</span>
+          <h2 class="slide-heading">Gestão da Turma e Busca de Alunos</h2>
+          <p class="slide-desc">Encontre qualquer usuário e altere permissões instantaneamente:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🔍</div>
+              <div><strong>Busca em Tempo Real:</strong> Digite o nome ou e-mail na barra de pesquisa para filtrar os alunos na hora.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">👥</div>
+              <div><strong>Promover Colega:</strong> Quer dar acesso de professor a outro docente? Basta mudar o seletor da coluna para <code>Professor</code>.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Gestão de Usuários (admin.html)</span></div>
+            <div class="screen-body">
+              <div style="background:#090e17; border:1px solid var(--border); padding:0.45rem 0.75rem; border-radius:6px; font-size:0.8rem; color:#fff; width:220px;">🔍 mariana</div>
+              <table class="app-table" style="margin-top:0.5rem;">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Papel</th>
+                    <th>Alterar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mariana Costa</td>
+                    <td><span class="app-tag">ALUNO</span></td>
+                    <td>
+                      <select style="background:#090e17; color:#fff; border:1px solid var(--border); padding:3px; border-radius:4px; font-size:0.75rem;">
+                        <option selected>Aluno</option>
+                        <option>Professor</option>
+                        <option>Empresa</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 29: BANIMENTO DISCIPLINAR -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 13</span>
+          <h2 class="slide-heading">Moderação Disciplinar: Banir e Reativar</h2>
+          <p class="slide-desc">Ferramenta para manter o ambiente acadêmico seguro e respeitoso:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🚫</div>
+              <div><strong>Como Banir:</strong> Clique no botão <code>🚫 Banir</code> na linha do aluno. A conta passa para o status <code>BANIDO</code>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">⛔</div>
+              <div><strong>O que acontece com o aluno:</strong> Se ele tentar postar, o sistema bloqueia. Se ele tentar logar, uma mensagem informa que a conta está suspensa e encerra a sessão na hora.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">✅</div>
+              <div><strong>Para Reativar:</strong> O botão vira <code>✅ Reativar</code> a qualquer momento.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Ação de Banimento</span></div>
+            <div class="screen-body">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Status</th>
+                    <th>Ação Disciplinar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="background: rgba(239, 68, 68, 0.08);">
+                    <td>João Infrator</td>
+                    <td><span style="background:#ef4444; color:#fff; padding:2px 6px; border-radius:4px; font-size:0.7rem; font-weight:700;">BANIDO</span></td>
+                    <td>
+                      <span class="app-btn" style="background:var(--primary); color:#000; padding:2px 8px; font-size:0.75rem; font-weight:700;">✅ Reativar</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 30: EXCLUSÃO DEFINITIVA DE CONTA -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 14</span>
+          <h2 class="slide-heading">Exclusão Definitiva de Contas</h2>
+          <p class="slide-desc">Para contas de teste, abandono de curso ou cumprimento da LGPD:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🗑️</div>
+              <div>Clique no botão vermelho <strong>"🗑️ Excluir Conta"</strong> na linha do usuário.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">⚠️</div>
+              <div>O sistema pede confirmação visual antes de executar.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">💥</div>
+              <div>A conta de e-mail, login e histórico são apagados <strong>permanentemente</strong> do banco de dados.</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            🛡️ O sistema impede que você exclua a sua própria conta acidentalmente.
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Exclusão Permanente</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:320px; text-align:center; border:1px solid var(--danger);">
+                <div style="font-size:2rem;">🗑️</div>
+                <h4 style="color:#fff; font-size:0.95rem;">Excluir Conta Definitivamente?</h4>
+                <p style="font-size:0.75rem; color:var(--text-muted);">Esta ação removerá o login e dados de forma irreversível.</p>
+                <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                  <span class="app-btn" style="background:#1e293b; flex:1;">Cancelar</span>
+                  <span class="app-btn" style="background:var(--danger); flex:1;">Excluir</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 31: EMITINDO CONVITES INSTITUCIONAIS -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 15</span>
+          <h2 class="slide-heading">Como Convidar Novos Colegas e Empresas</h2>
+          <p class="slide-desc">Gere acessos de docente e parceiros com link automático:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>Abra a aba <strong>"🎟️ Convites Institucionais"</strong> no Backoffice.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>Digite o e-mail do professor ou parceiro e selecione o papel correspondente.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>Clique em <strong>"Gerar Convite"</strong>. O link de ativação é <strong>copiado automaticamente</strong> para a sua área de transferência para você enviar no WhatsApp ou e-mail!</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Emitir Convite (admin.html)</span></div>
+            <div class="screen-body">
+              <div class="app-card">
+                <h4 style="color:#fff; font-size:0.95rem;">Emitir Novo Convite</h4>
+                <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                  <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff; flex:1;">prof.silva@escola.br</div>
+                  <div style="background:#090e17; border:1px solid var(--border); padding:0.4rem; border-radius:6px; font-size:0.8rem; color:#fff; width:120px;">Professor</div>
+                  <div class="app-btn" style="white-space:nowrap;">Gerar Convite</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 32: MONITORANDO CONVITES -->
+      <section class="slide" data-track="Professor">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Trilha do Professor • Passo 16</span>
+          <h2 class="slide-heading">Monitorando e Revogando Convites</h2>
+          <p class="slide-desc">Veja quem já ativou a conta e recupere links perdidos:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">📋</div>
+              <div><strong>Copiar Link Novamente:</strong> Se o professor convidado perdeu o link, basta clicar em <code>📋 Copiar Link</code> na tabela para reenviar.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">⏳</div>
+              <div><strong>Status:</strong> Veja se está <code>⏳ Pendente</code> ou se a pessoa já realizou o cadastro (<code>✅ Conta Criada</code>).</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">🚫</div>
+              <div><strong>Revogar:</strong> Errou o endereço de e-mail? Clique em <code>Revogar</code> para cancelar o convite.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Tabela de Convites</span></div>
+            <div class="screen-body">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>E-mail</th>
+                    <th>Papel</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>rh@empresa.com</td>
+                    <td>EMPRESA</td>
+                    <td><span style="color:var(--warning); font-size:0.75rem;">⏳ Pendente</span></td>
+                    <td>
+                      <span class="app-btn" style="background:#1e293b; padding:2px 8px; font-size:0.75rem;">📋 Copiar</span>
+                      <span class="app-btn" style="background:#ef4444; padding:2px 8px; font-size:0.75rem;">Revogar</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PARTE 3: ENCERRAMENTO E BOAS PRÁTICAS (SLIDES 33 E 34)
+           ==================================================================== -->
+
+      <!-- SLIDE 33: DICAS DE SEGURANÇA E LOGOUT -->
+      <section class="slide" data-track="Geral">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Boas Práticas</span>
+          <h2 class="slide-heading">Segurança e Saída Correta da Conta</h2>
+          <p class="slide-desc">Dicas essenciais de uso em laboratórios da escola:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">🚪</div>
+              <div><strong>Sempre Encerre a Sessão:</strong> Ao usar computadores compartilhados da escola, clique no botão vermelho <strong>"🚪 Sair"</strong> no topo ou no seu perfil antes de fechar a janela.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">🔑</div>
+              <div><strong>Nunca Compartilhe Senhas:</strong> Sua autoria em projetos e medalhas dependem da sua conta individual.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Encerramento Seguro</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center;">
+              <div class="app-card" style="width:320px; text-align:center;">
+                <div style="font-size:2rem;">🛡️</div>
+                <h4 style="color:#fff; font-size:1rem;">Sessão Segura</h4>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">Proteja seus projetos e créditos acadêmicos.</p>
+                <div class="app-btn" style="background:var(--danger); text-align:center;">🚪 Encerrar Sessão Agora</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 34: ENCERRAMENTO E CONCLUSÃO -->
+      <section class="slide" data-track="Geral">
+        <div class="slide-sidebar">
+          <span class="slide-chapter">Encerramento</span>
+          <h2 class="slide-heading">Pronto para Começar! 🚀</h2>
+          <p class="slide-desc">O Conecta DS é o produto digital da nossa comunidade técnica:</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">✔</div>
+              <div><strong>Alunos:</strong> Criem suas contas, acompanhem os avisos e publiquem seus trabalhos práticos.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">✔</div>
+              <div><strong>Professores:</strong> Moderem projetos com agilidade para motivar os alunos com portfólio real e medalhas.</div>
+            </div>
+          </div>
+          <div class="tip-box">
+            Bons estudos, bons códigos e uma excelente jornada no desenvolvimento de sistemas!
+          </div>
+        </div>
+        <div class="slide-stage">
+          <div class="screen-mockup">
+            <div class="screen-topbar"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="screen-url">Portal Conecta DS Oficial</span></div>
+            <div class="screen-body" style="align-items:center; justify-content:center; text-align:center; gap:1.25rem;">
+              <div style="font-size:3.5rem;">🎓</div>
+              <h3 style="font-size:1.4rem; color:#fff; font-weight:800;">Conecta DS no Ar!</h3>
+              <p style="color:var(--text-muted); max-width:400px; font-size:0.85rem;">
+                Dúvidas sobre o funcionamento do portal? Procure a coordenação do curso de Desenvolvimento de Sistemas.
+              </p>
+              <div class="app-btn" onclick="goToSlide(0)" style="cursor:pointer; padding:0.5rem 1.25rem;">Voltar ao Início do Guia</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BARRA INFERIOR DE CONTROLES -->
+    <footer class="manual-controls">
+      <div id="progress-bar"></div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-counter">
+          <span id="slide-num">SLIDE 01</span> / <span id="slide-total">34</span>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <button id="btn-prev" class="btn-ctrl" title="Anterior [←]">◀ Anterior</button>
+        <button id="btn-play" class="btn-ctrl primary" title="Pausar / Retomar [Espaço]">⏸ Pausar</button>
+        <button id="btn-next" class="btn-ctrl" title="Próximo [→]">Próximo ▶</button>
+        <button id="btn-index" class="btn-ctrl" title="Sumário [I]">📑 Sumário</button>
+      </div>
+
+      <div class="ctrl-group">
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Velocidade:</span>
+        <select id="speed-select" style="background: #1e293b; color: #fff; border: 1px solid var(--border); padding: 3px 6px; border-radius: 4px; font-size: 0.8rem;">
+          <option value="0.5">0.5x</option>
+          <option value="1" selected>1.0x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2">2.0x</option>
+        </select>
+        <button id="btn-fs" class="btn-ctrl" title="Tela Cheia [F]">⛶</button>
+      </div>
+    </footer>
+
+    <!-- GAVETA LATERAL DO SUMÁRIO -->
+    <aside id="index-drawer">
+      <div class="drawer-head">
+        <span>Sumário das Trilhas</span>
+        <button id="btn-close-index" style="background:none; border:none; color:var(--text-muted); font-size:1.5rem; cursor:pointer;">&times;</button>
+      </div>
+      <div id="index-list" class="drawer-content"></div>
+    </aside>
+
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      let currentIndex = 0;
+      let isPlaying = true;
+      let speed = 1.0;
+      let slideTimeRemaining = 24000;
+      const baseDuration = 24000;
+      let timerInterval = null;
+      let lastTimestamp = Date.now();
+
+      const slideNum = document.getElementById('slide-num');
+      const slideTotal = document.getElementById('slide-total');
+      const progressBar = document.getElementById('progress-bar');
+      const btnPlay = document.getElementById('btn-play');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const btnIndex = document.getElementById('btn-index');
+      const btnCloseIndex = document.getElementById('btn-close-index');
+      const indexDrawer = document.getElementById('index-drawer');
+      const indexList = document.getElementById('index-list');
+      const speedSelect = document.getElementById('speed-select');
+      const trackBadge = document.getElementById('slide-track-badge');
+      const btnFs = document.getElementById('btn-fs');
+
+      slideTotal.innerText = String(slides.length).padStart(2, '0');
+
+      function buildIndex() {
+        indexList.innerHTML = slides.map((s, idx) => {
+          const title = s.querySelector('.slide-heading')?.innerText || `Tópico ${idx + 1}`;
+          const chapter = s.querySelector('.slide-chapter')?.innerText || `Parte ${idx + 1}`;
+          const track = s.dataset.track || 'Geral';
+          return `
+            <div class="index-item ${idx === currentIndex ? 'active' : ''}" data-idx="${idx}">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size: 0.7rem; color: var(--accent); font-weight:700;">${chapter}</span>
+                <span style="font-size: 0.65rem; padding:1px 5px; border-radius:4px; background:#1e293b;">${track}</span>
+              </div>
+              <strong style="color: #fff; font-size:0.8rem; margin-top:2px;">${title}</strong>
+            </div>
+          `;
+        }).join('');
+
+        indexList.querySelectorAll('.index-item').forEach(item => {
+          item.onclick = () => {
+            goToSlide(parseInt(item.dataset.idx, 10));
+            indexDrawer.classList.remove('open');
+          };
+        });
+      }
+
+      window.goToSlide = function(idx) {
+        if (idx < 0 || idx >= slides.length) return;
+        slides[currentIndex].classList.remove('active');
+        currentIndex = idx;
+        slides[currentIndex].classList.add('active');
+
+        slideNum.innerText = `SLIDE ${String(currentIndex + 1).padStart(2, '0')}`;
+        
+        const track = slides[currentIndex].dataset.track || 'Geral';
+        trackBadge.innerText = track;
+        trackBadge.className = `manual-badge-track track-${track.toLowerCase()}`;
+
+        slideTimeRemaining = baseDuration / speed;
+        lastTimestamp = Date.now();
+        buildIndex();
+      };
+
+      function updateProgress() {
+        const pct = ((currentIndex + 1) / slides.length) * 100;
+        progressBar.style.width = `${pct}%`;
+      }
+
+      function next() {
+        if (currentIndex < slides.length - 1) {
+          goToSlide(currentIndex + 1);
+        } else {
+          pause();
+        }
+      }
+
+      function prev() {
+        if (currentIndex > 0) goToSlide(currentIndex - 1);
+      }
+
+      function play() {
+        isPlaying = true;
+        lastTimestamp = Date.now();
+        btnPlay.innerText = '⏸ Pausar';
+      }
+
+      function pause() {
+        isPlaying = false;
+        btnPlay.innerText = '▶ Retomar';
+      }
+
+      function togglePlay() {
+        if (isPlaying) pause();
+        else play();
+      }
+
+      btnPlay.onclick = togglePlay;
+      btnNext.onclick = next;
+      btnPrev.onclick = prev;
+      btnIndex.onclick = () => indexDrawer.classList.toggle('open');
+      btnCloseIndex.onclick = () => indexDrawer.classList.remove('open');
+
+      speedSelect.onchange = (e) => {
+        speed = parseFloat(e.target.value);
+        slideTimeRemaining = (baseDuration / speed);
+      };
+
+      btnFs.onclick = () => {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      };
+
+      window.onkeydown = (e) => {
+        if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+        if (e.code === 'ArrowRight') next();
+        if (e.code === 'ArrowLeft') prev();
+        if (e.code === 'KeyF') btnFs.click();
+        if (e.code === 'KeyI') btnIndex.click();
+        if (e.code === 'Home') goToSlide(0);
+      };
+
+      timerInterval = setInterval(() => {
+        if (!isPlaying) return;
+        const now = Date.now();
+        slideTimeRemaining -= (now - lastTimestamp);
+        lastTimestamp = now;
+
+        if (slideTimeRemaining <= 0) {
+          next();
+        }
+        updateProgress();
+      }, 200);
+
+      buildIndex();
+      goToSlide(0);
+    })();
+  </script>
+</body>
+</html>
